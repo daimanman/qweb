@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="referrer" content="never">
+    <title>userinfo</title>
+    <script src="../jquery/jquery-1.8.3.min.js"></script>
+    <script src="../plugins/layui/layui.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/FormParams.js"></script>
+
+    <link rel="stylesheet" href="../plugins/layui/css/layui.css" />
+    <link rel="stylesheet" href="../font-awesome/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="css/qq.css" />
+</head>
+
+<body>
+    <div class="admin-main layui-form" id="admin-main-params">
+        <div class="layui-inline">
+            <label class="layui-form-label">名称</label>
+            <div class="layui-input-block" style="width: 80px;">
+                <input class="layui-input " type="text" name="nickname" />
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">公司</label>
+            <div class="layui-input-block" style="width: 80px;">
+                <input class="layui-input " type="text" name="company" />
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">事业</label>
+            <div class="layui-input-block" style="width: 80px;">
+                <input class="layui-input " type="text" name="career" />
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">UID</label>
+            <div class="layui-input-block" style="width: 80px;">
+                <input class="layui-input" type="text" name="uid" />
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">城市</label>
+            <div class="layui-input-block" style="width: 60px;">
+                <input class="layui-input" type="text" name="city" />
+            </div>
+        </div>
+        <div class="layui-inline">
+
+            <label class="layui-form-label">性别:</label>
+            <div class="layui-input-block" style="width: 80px;">
+                <select name="sex">
+                    <option value=" ">-全部-</option>
+                    <option value="1">男</option>
+                    <option value="2">女</option>
+                </select>
+            </div>
+
+        </div>
+
+
+        <div class="layui-inline">
+            <label class="layui-form-label">年龄</label>
+            <div class="layui-input-inline" style="width: 40px;">
+                <input type="text" name="ageStart" autocomplete="off" class="layui-input">
+            </div>
+            <div class="layui-input-inline">-</div>
+            <div class="layui-input-inline" style="width: 40px;">
+                <input type="text" name="ageEnd" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+
+
+
+        <div class="layui-inline" style="margin-left:15px;">
+            <a class="layui-btn layui-btn-xs layui-btn-normal" id="searchBtn" href="javascript:void(0);">
+                搜索 </a>
+        </div>
+
+    </div>
+
+    <div>
+        <table class="layui-hide" id="tableDiv"></table>
+    </div>
+
+</body>
+
+</html>
+<script>
+    layui.use('table', function(){
+      var table = layui.table;
+      var formUtils = yihg_utils_fun;
+      var tableEle = table.render({
+        elem: '#tableDiv'
+        ,url:_webConfig.api+_webConfig.uinfo_list
+        ,cols: [[
+          {field:'id', width:150, title: 'ID', sort: true},
+          {field: '',index: '',width:70, sort: false,title:"icon",templet:"#iconTpl"},
+          {field: 'uid',index: 'uid',width: 150,  sort: false,title:"UID"},
+          {field: 'sex',index: 'sex',width:80,  sort: false,title:"sex"},
+          {field: 'age',index: 'age',width:80,  sort: true,title:"age"},
+          {field: '',index: '',width:120, sort: false,title:"birth",templet:"#birthTpl"},
+          {field: 'nickname',index: 'nickname',width: 100,  sort: false,title:"昵称"},
+          {field: 'career',index: 'career',width: 90,title:"career"},
+          {field: 'company',index: 'company',width:90,title:"company"},
+          {field: 'country',index: 'country',width: 80,title:"country"},
+          {field: 'province',index: 'province',width: 80,title:"province"},
+          {field: 'city',index: 'city',width: 80,title:"city"},
+          {field: 'hco',index: 'hco',width: 80,title:"hco"},
+          {field: 'hp',index: 'hp',width: 80,title:"hp"},
+          {field: 'hc',index: 'hc',width: 80,title:"hc"},
+          {field: 'cp',index: 'cp',width: 80,title:"cp"},
+          {field: 'cc',index: 'cc',width: 80,title:"cc"},
+          {field: 'co',index: 'co',width: 80,title:"co"}
+        ]]
+        ,page: true
+        ,response: {
+        statusName: 'code' //规定数据状态的字段名称，默认：code
+        ,statusCode: 0 //规定成功的状态码，默认：0
+        ,msgName: '' //规定状态信息的字段名称，默认：msg
+        ,countName: 'total' //规定数据总数的字段名称，默认：count
+        ,dataName: 'datas' //规定数据列表的字段名称，默认：data
+        },request: {
+            pageName: 'page' //页码的参数名称，默认：page
+            ,limitName: 'pageSize' //每页数据量的参数名，默认：limit
+        }
+      });
+
+      $("#searchBtn").on("click",function(e){
+        var params = formUtils.getParams('admin-main-params');
+        tableEle.reload({
+            where:params,
+            page: {
+                curr: 1 //重新从第 1 页开始
+            }
+        });
+      });
+    });
+    </script>
+
+<script type="text/html" id="iconTpl">
+    <img src="http://qlogo1.store.qq.com/qzone/{{d.uid}}/{{d.uid}}/30" />
+    </script>
+
+<script type="text/html" id="birthTpl">
+    <span>{{d.birthyear}}</span>
+        <span>{{d.birthday}}</span>
+    </script>

@@ -5,7 +5,7 @@ var _webConfigSolr = {
     "img_list":"/solr/queryImgInfo"
 }
 var _webConfig = {
-    "api":"http://localhost:8080/",
+    "api":"http://192.168.1.193:8080/",
     "uinfo_list":"queryUserPage",
     "phot_list":"queryPhotoPage",
     "photo_list":"queryPhotoPage",
